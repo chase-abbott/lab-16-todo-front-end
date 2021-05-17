@@ -17,3 +17,10 @@ export async function addTodo(todo) {
     .send(todo);
   return response.body;
 }
+
+export async function getTodos() {
+  const response = await request
+    .get('/api/me/todos')
+    .set('Authorization', window.localStorage.getItem('TOKEN'));
+  return response.body;
+}
