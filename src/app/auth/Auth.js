@@ -12,13 +12,17 @@ export default class Auth extends Component {
 
   handleSubmit = async (e) => {
     const { isSignUp } = this.state;
+    const { onUser, history } = this.props;
     e.preventDefault();
 
     try {
       const action = isSignUp ? signUp : signIn;
 
       const user = await action(this.state);
-      console.log(user);
+
+      onUser(user);
+
+      history.push('/');
     } catch (err) {
       console.log(err.message);
     }
@@ -34,14 +38,6 @@ export default class Auth extends Component {
 
   handlePasswordChange = ({ target }) => {
     this.setState({ password: target.value });
-  };
-
-  handleSignUp = () => {
-    this.handleSubmit(this.state);
-  };
-
-  handleSignIn = () => {
-    this.handleSubmit(this.state);
   };
 
   handleSignUpToggle = (e) => {
@@ -86,23 +82,13 @@ export default class Auth extends Component {
             </label>
           </p>
 
-          {this.state.isSignUp ? (
-            <button> Sign Up </button>
-          ) : (
-            <button> Sign In </button>
-          )}
+          <button>
+            {this.state.isSignUp ? 'Sign Up' : 'Sign In'}
+          </button>
 
-          {this.state.isSignUp ? (
-            <button onClick={this.handleSignUpToggle}>
-              {' '}
-              Already have an account?{' '}
-            </button>
-          ) : (
-            <button onClick={this.handleSignUpToggle}>
-              {' '}
-              Need to create account?{' '}
-            </button>
-          )}
+          <button onClick={this.handleSignUpToggle}>
+            {this.state.isSignUp ? 'Already have an account?' : 'Need to create and account?'}
+          </button>
         </form>
       </div>
     );

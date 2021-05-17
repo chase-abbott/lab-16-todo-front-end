@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Home from '../home/Home';
 import Auth from './auth/Auth';
+import TodoPage from '../todo/TodoPage';
 import {
   BrowserRouter as Router,
   Route,
@@ -12,6 +13,15 @@ import {
 import './App.css';
 
 class App extends Component {
+  state = {
+    user: null,
+    token: window.localStorage.getItem('TOKEN')
+  }
+
+  handleUser = user => {
+    window.localStorage.setItem('TOKEN', user.token);
+    this.setState({ token: user.token, user: user });
+  }
 
   render() {
     return (
@@ -29,13 +39,13 @@ class App extends Component {
 
               <Route path="/signup" exact={true}
                 render={routerProps => (
-                  <Auth />
+                  <Auth {...routerProps} onUser={this.handleUser} />
                 )}
               />
 
-              <Route path="/api/me/todos"
+              <Route path="/me/todos"
                 render={routerProps => (
-                  <div>Implement a page for id {routerProps.match.params.id}</div>
+                  <TodoPage {...routerProps} />
                 )}
               />
 
