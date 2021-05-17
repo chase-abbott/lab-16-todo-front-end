@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import './TodoPage.css';
-import { addTodo, getTodos } from '../utils/todo-api.js';
+import { addTodo, getTodos, updateTodoCompleted } from '../utils/todo-api.js';
 
 export default class TodoPage extends Component {
   state = {
@@ -38,6 +38,15 @@ export default class TodoPage extends Component {
     }
   };
 
+  toggleComplete = async updatedTodo => {
+    updatedTodo.completed = !updatedTodo.completed;
+    const updatedDatabaseTodo = await updateTodoCompleted(updatedTodo);
+    const updatedTodos = this.state.todos.map(todo => {
+      return todo.id === updatedDatabaseTodo.id ? updatedDatabaseTodo : todo;
+    });
+    this.setState({ todos: updatedTodos });
+  }
+
   render() {
     const { todos } = this.state;
     return (
@@ -49,10 +58,15 @@ export default class TodoPage extends Component {
               onChange={this.handleNewTodo}
             ></input>
             <button> Add Todo </button>
+
           </label>
           <ul>
             {todos.map((todo) => (
-              <li key={todo.id}> {todo.task} </li>
+              <li key={todo.id}>
+                {todo.task}
+                <input type="checkbox" onChange={() => this.toggleComplete(todo)}
+                  checked={todo.completed}></input>
+              </li>
             ))}
           </ul>
         </form>
