@@ -3,16 +3,16 @@ import './Header.css';
 
 class Header extends Component {
 
-  render() { 
+  render() {
     return (
       <header className="Header">
 
-        <h1>React App</h1>
-        
+        <h1>Todo Tracker</h1>
+
       </header>
     );
   }
 
 }
- 
+
 export default Header;
