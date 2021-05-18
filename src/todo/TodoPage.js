@@ -1,6 +1,11 @@
 import { Component } from 'react';
 import './TodoPage.css';
-import { addTodo, getTodos, updateTodoCompleted } from '../utils/todo-api.js';
+import {
+  addTodo,
+  getTodos,
+  updateTodoCompleted,
+  deleteTodo,
+} from '../utils/todo-api.js';
 
 export default class TodoPage extends Component {
   state = {
@@ -12,7 +17,7 @@ export default class TodoPage extends Component {
     const updatedTodos = await getTodos();
     console.log(updatedTodos);
     this.setState({ todos: updatedTodos });
-  }
+  };
 
   handleNewTodo = ({ target }) => {
     this.setState({ task: target.value });
@@ -38,14 +43,22 @@ export default class TodoPage extends Component {
     }
   };
 
-  toggleComplete = async updatedTodo => {
+  toggleComplete = async (updatedTodo) => {
     updatedTodo.completed = !updatedTodo.completed;
     const updatedDatabaseTodo = await updateTodoCompleted(updatedTodo);
-    const updatedTodos = this.state.todos.map(todo => {
+    const updatedTodos = this.state.todos.map((todo) => {
       return todo.id === updatedDatabaseTodo.id ? updatedDatabaseTodo : todo;
     });
     this.setState({ todos: updatedTodos });
-  }
+  };
+
+  handleDelete = async (todo) => {
+    const deletedTodo = await deleteTodo(todo);
+    const updatedTodos = this.state.todos.filter(
+      (todo) => todo.id !== deletedTodo.id
+    );
+    this.setState({ todos: updatedTodos });
+  };
 
   render() {
     const { todos } = this.state;
@@ -58,14 +71,17 @@ export default class TodoPage extends Component {
               onChange={this.handleNewTodo}
             ></input>
             <button> Add Todo </button>
-
           </label>
           <ul>
             {todos.map((todo) => (
               <li key={todo.id}>
                 {todo.task}
-                <input type="checkbox" onChange={() => this.toggleComplete(todo)}
-                  checked={todo.completed}></input>
+                <input
+                  type='checkbox'
+                  onChange={() => this.toggleComplete(todo)}
+                  checked={todo.completed}
+                ></input>
+                <button onClick={() => this.handleDelete(todo)}>X</button>
               </li>
             ))}
           </ul>

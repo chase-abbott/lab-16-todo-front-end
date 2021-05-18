@@ -32,3 +32,10 @@ export async function updateTodoCompleted(todo) {
     .send(todo);
   return response.body;
 }
+
+export async function deleteTodo(todo) {
+  const response = await request
+    .delete(`/api/todos/${todo.id}`)
+    .set('Authorization', window.localStorage.getItem('TOKEN'));
+  return response.body;
+}
