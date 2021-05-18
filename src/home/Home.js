@@ -10,6 +10,7 @@ export default class Home extends Component {
         <h2>Home Page</h2>
 
         <Link to='/me/todos'>See Your Todo List</Link>
+        <Link to='/todos'> See The Shared Todo List </Link>
       </div>
     );
   }

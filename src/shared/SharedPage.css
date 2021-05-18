@@ -1,0 +1,9 @@
+.SharedPage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.SharedPage .user {
+  background-color: aqua;
+}

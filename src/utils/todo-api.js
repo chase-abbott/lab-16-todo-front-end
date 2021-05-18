@@ -39,3 +39,19 @@ export async function deleteTodo(todo) {
     .set('Authorization', window.localStorage.getItem('TOKEN'));
   return response.body;
 }
+
+export async function getSharedTodos() {
+  const response = await request
+    .get('/api/todos')
+    .set('Authorization', window.localStorage.getItem('TOKEN'));
+  return response.body;
+}
+
+export async function shareTodo(todo) {
+  const response = await request
+    .put(`/api/todos/${todo.id}/shared`)
+    .set('Authorization', window.localStorage.getItem('TOKEN'))
+    .send(todo);
+
+  return response.body;
+}
