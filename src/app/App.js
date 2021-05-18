@@ -4,6 +4,7 @@ import Footer from './Footer';
 import Home from '../home/Home';
 import Auth from './auth/Auth';
 import TodoPage from '../todo/TodoPage';
+import SharedPage from '../shared/SharedPage';
 import {
   BrowserRouter as Router,
   Route,
@@ -24,6 +25,7 @@ class App extends Component {
   }
 
   render() {
+  
     return (
       <div className="App">
         <Router>
@@ -33,7 +35,9 @@ class App extends Component {
             <Switch>
               <Route path="/" exact={true}
                 render={routerProps => (
-                  <Home {...routerProps} />
+                  this.state.token 
+                    ? <Home {...routerProps} />
+                    : <Redirect to="/signup"/>
                 )}
               />
 
@@ -45,9 +49,18 @@ class App extends Component {
 
               <Route path="/me/todos"
                 render={routerProps => (
-                  <TodoPage {...routerProps} />
+                  this.state.token 
+                    ? <TodoPage {...routerProps} />
+                    : <Redirect to="/signup"/>
                 )}
               />
+
+              <Route path="/todos"
+                render={routerProps => (
+                  this.state.token
+                    ? <SharedPage {...routerProps}/>
+                    : <Redirect to="/signup"/>
+                )}/>
 
               <Redirect to="/" />
 
@@ -58,7 +71,6 @@ class App extends Component {
       </div>
     );
   }
-
 }
 
 export default App;

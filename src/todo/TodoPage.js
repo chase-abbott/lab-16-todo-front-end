@@ -5,6 +5,7 @@ import {
   getTodos,
   updateTodoCompleted,
   deleteTodo,
+  shareTodo
 } from '../utils/todo-api.js';
 
 export default class TodoPage extends Component {
@@ -60,6 +61,15 @@ export default class TodoPage extends Component {
     this.setState({ todos: updatedTodos });
   };
 
+  handleShare = async (updatedTodo) => {
+    updatedTodo.shared = !updatedTodo.shared;
+    const updatedDatabaseTodo = await shareTodo(updatedTodo);
+    const updatedTodos = this.state.todos.map((todo) => {
+      return todo.id === updatedDatabaseTodo.id ? updatedDatabaseTodo : todo;
+    });
+    this.setState({ todos: updatedTodos });
+  }
+
   render() {
     const { todos } = this.state;
     return (
@@ -82,6 +92,7 @@ export default class TodoPage extends Component {
                   checked={todo.completed}
                 ></input>
                 <button onClick={() => this.handleDelete(todo)}>X</button>
+                <button onClick={() => this.handleShare(todo)}>Share</button>
               </li>
             ))}
           </ul>
