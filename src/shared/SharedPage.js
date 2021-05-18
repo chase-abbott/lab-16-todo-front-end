@@ -21,7 +21,17 @@ export default class SharedPage extends Component {
         </div>
         <ul>
           {todos.map((todo) => (
-            <li key={todo.id}> {todo.task} </li>
+            <li
+              key={todo.id}
+              className={
+                todo.userId.toString() === window.localStorage.getItem('ID')
+                  ? 'user'
+                  : null
+              }
+            >
+              {' '}
+              {todo.task}{' '}
+            </li>
           ))}
         </ul>
       </div>

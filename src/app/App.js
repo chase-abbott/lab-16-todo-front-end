@@ -9,61 +9,72 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
   state = {
-    user: null,
-    token: window.localStorage.getItem('TOKEN')
-  }
+    id: window.localStorage.getItem('ID'),
+    token: window.localStorage.getItem('TOKEN'),
+  };
 
-  handleUser = user => {
-    window.localStorage.setItem('TOKEN', user.token);
-    this.setState({ token: user.token, user: user });
-  }
+  handleUser = (id, token) => {
+    window.localStorage.setItem('TOKEN', token);
+    window.localStorage.setItem('ID', id);
+    this.setState({ id: id, token: token });
+  };
 
   render() {
-  
     return (
-      <div className="App">
+      <div className='App'>
         <Router>
           <Header />
           <main>
-
             <Switch>
-              <Route path="/" exact={true}
-                render={routerProps => (
-                  this.state.token 
-                    ? <Home {...routerProps} />
-                    : <Redirect to="/signup"/>
-                )}
+              <Route
+                path='/'
+                exact={true}
+                render={(routerProps) =>
+                  this.state.token ? (
+                    <Home {...routerProps} />
+                  ) : (
+                    <Redirect to='/signup' />
+                  )
+                }
               />
 
-              <Route path="/signup" exact={true}
-                render={routerProps => (
+              <Route
+                path='/signup'
+                exact={true}
+                render={(routerProps) => (
                   <Auth {...routerProps} onUser={this.handleUser} />
                 )}
               />
 
-              <Route path="/me/todos"
-                render={routerProps => (
-                  this.state.token 
-                    ? <TodoPage {...routerProps} />
-                    : <Redirect to="/signup"/>
-                )}
+              <Route
+                path='/me/todos'
+                render={(routerProps) =>
+                  this.state.token ? (
+                    <TodoPage {...routerProps} />
+                  ) : (
+                    <Redirect to='/signup' />
+                  )
+                }
               />
 
-              <Route path="/todos"
-                render={routerProps => (
-                  this.state.token
-                    ? <SharedPage {...routerProps}/>
-                    : <Redirect to="/signup"/>
-                )}/>
+              <Route
+                path='/todos'
+                render={(routerProps) =>
+                  this.state.token ? (
+                    <SharedPage {...routerProps} />
+                  ) : (
+                    <Redirect to='/signup' />
+                  )
+                }
+              />
 
-              <Redirect to="/" />
-
+              <Redirect to='/' />
             </Switch>
           </main>
           <Footer />

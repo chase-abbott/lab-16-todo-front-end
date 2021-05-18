@@ -20,7 +20,7 @@ export default class Auth extends Component {
 
       const user = await action(this.state);
 
-      onUser(user);
+      onUser(user.id, user.token);
 
       history.push('/');
     } catch (err) {
@@ -82,12 +82,12 @@ export default class Auth extends Component {
             </label>
           </p>
 
-          <button>
-            {this.state.isSignUp ? 'Sign Up' : 'Sign In'}
-          </button>
+          <button>{this.state.isSignUp ? 'Sign Up' : 'Sign In'}</button>
 
           <button onClick={this.handleSignUpToggle}>
-            {this.state.isSignUp ? 'Already have an account?' : 'Need to create and account?'}
+            {this.state.isSignUp
+              ? 'Already have an account?'
+              : 'Need to create and account?'}
           </button>
         </form>
       </div>
